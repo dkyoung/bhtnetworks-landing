@@ -170,11 +170,24 @@ function setupContactForm() {
   });
 }
 
+function setupBackToTop() {
+  const backToTopLink = $(".footer__link[href='#top']");
+  if (!backToTopLink) return;
+
+  backToTopLink.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+  });
+}
+
 function init() {
   setYear();
   setupMobileMenu();
   setupCopyEmail();
   setupContactForm();
+  setupBackToTop();
 }
 
 document.addEventListener("DOMContentLoaded", init);
