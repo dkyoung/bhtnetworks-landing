@@ -10,7 +10,7 @@
  */
 
 const CONFIG = {
-  businessEmail: "hello@bhtnetworks.com", // <-- change this when ready
+  businessEmail: "domingo@bhtnetworks.com",
   mailSubject: "BHT Networks - Site Survey Request",
 };
 
