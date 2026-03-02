@@ -109,7 +109,7 @@ function setupContactForm() {
   const note = $("#formNote");
   if (!form) return;
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (note) note.textContent = "";
 
@@ -130,30 +130,43 @@ function setupContactForm() {
       return;
     }
 
-    const bodyLines = [
-      "Site Survey Request",
-      "------------------",
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Business/Location: ${location}`,
-      "",
-      "Message:",
-      message,
-      "",
-      "— Sent from the BHT Networks landing page",
-    ];
+    data.append("_subject", CONFIG.mailSubject);
 
-    const mailto = [
-      `mailto:${encodeURIComponent(CONFIG.businessEmail)}`,
-      `?subject=${encodeURIComponent(CONFIG.mailSubject)}`,
-      `&body=${encodeURIComponent(bodyLines.join("\n"))}`,
-    ].join("");
+    if (note) note.textContent = "Sending…";
 
-    // This opens the user's email client with the message prefilled.
-    window.location.href = mailto;
+    try {
+      const endpoint = form.getAttribute("action");
+      if (!endpoint || !endpoint.startsWith("https://formspree.io/")) {
+        if (note) note.textContent = "Form endpoint missing. Add your Formspree URL in index.html.";
+        return;
+      }
 
-    if (note) note.textContent = "Opening your email app…";
-    form.reset();
+      const res = await fetch(endpoint, {
+        method: "POST",
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (res.ok) {
+        if (note) note.textContent = "Submitted. Thank you — we’ll reach out soon.";
+        form.reset();
+        return;
+      }
+
+      let errMsg = "Submission failed. Please try again.";
+      try {
+        const json = await res.json();
+        if (json && json.errors && json.errors.length) {
+          errMsg = json.errors.map((x) => x.message).join(" ");
+        }
+      } catch {}
+
+      if (note) note.textContent = errMsg;
+    } catch {
+      if (note) note.textContent = "Network error. Please try again or email us directly.";
+    }
   });
 }
 
