@@ -393,6 +393,44 @@ h2 {
   gap: 14px;
 }
 
+
+.equipmentGrid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.equipmentCard {
+  border-radius: var(--radius2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.equipmentCard__image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.equipmentCard__body {
+  padding: 16px;
+}
+
+.equipmentCard__body h3 {
+  margin: 0 0 8px;
+}
+
+.equipmentCard__body p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.equipmentActions {
+  margin-top: 16px;
+}
 .feature {
   border-radius: var(--radius);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -766,6 +804,7 @@ h2 {
 
   .hero__grid,
   .grid3,
+  .equipmentGrid,
   .split,
   .contact {
     grid-template-columns: 1fr;
