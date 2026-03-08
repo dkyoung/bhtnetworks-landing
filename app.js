@@ -1,17 +1,8 @@
 "use strict";
 
-/**
- * BHT Networks Landing Page JS
- * - Mobile menu toggle
- * - Smooth-ish internal navigation (native smooth scroll enabled in CSS)
- * - Copy email buttons
- * - Mailto-based contact form submission (no server required)
- * - Current year
- */
-
 const CONFIG = {
   businessEmail: "domingo@bhtnetworks.com",
-  mailSubject: "BHT Networks - Site Survey Request",
+  mailSubject: "BHT Networks - Commercial Site Survey Request",
 };
 
 const $ = (sel, parent = document) => parent.querySelector(sel);
@@ -44,25 +35,21 @@ function setupMobileMenu() {
     else openMenu();
   });
 
-  // Close menu when a link is clicked
   nav.addEventListener("click", (e) => {
     const target = e.target;
     if (target && target.matches("a")) closeMenu();
   });
 
-  // Close on Escape
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeMenu();
   });
 }
 
 async function copyToClipboard(text) {
-  // iOS Safari sometimes blocks clipboard unless triggered by user gesture.
   try {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
-    // Fallback
     try {
       const ta = document.createElement("textarea");
       ta.value = text;
@@ -120,10 +107,10 @@ function setupContactForm() {
     const message = String(data.get("message") || "").trim();
 
     const errors = [];
-    if (name.length < 2) errors.push("Name is required.");
-    if (!validEmail(email)) errors.push("Valid email is required.");
-    if (location.length < 2) errors.push("Business / location is required.");
-    if (message.length < 5) errors.push("Message is required.");
+    if (name.length < 2) errors.push("Please enter your name.");
+    if (!validEmail(email)) errors.push("Please enter a valid email address.");
+    if (location.length < 2) errors.push("Please provide your business or location.");
+    if (message.length < 5) errors.push("Please provide a short message about your site.");
 
     if (errors.length) {
       if (note) note.textContent = errors.join(" ");
@@ -132,12 +119,12 @@ function setupContactForm() {
 
     data.append("_subject", CONFIG.mailSubject);
 
-    if (note) note.textContent = "Sending…";
+    if (note) note.textContent = "Sending request...";
 
     try {
       const endpoint = form.getAttribute("action");
       if (!endpoint || !endpoint.startsWith("https://formspree.io/")) {
-        if (note) note.textContent = "Form endpoint missing. Add your Formspree URL in index.html.";
+        if (note) note.textContent = "Form service is not configured correctly.";
         return;
       }
 
@@ -150,12 +137,15 @@ function setupContactForm() {
       });
 
       if (res.ok) {
-        if (note) note.textContent = "Submitted. Thank you — we’ll reach out soon.";
+        if (note) {
+          note.textContent =
+            "Thank you. Your request was submitted successfully. Our team will follow up within 1–2 business days.";
+        }
         form.reset();
         return;
       }
 
-      let errMsg = "Submission failed. Please try again.";
+      let errMsg = "We could not submit your request right now. Please try again shortly.";
       try {
         const json = await res.json();
         if (json && json.errors && json.errors.length) {
@@ -165,7 +155,9 @@ function setupContactForm() {
 
       if (note) note.textContent = errMsg;
     } catch {
-      if (note) note.textContent = "Network error. Please try again or email us directly.";
+      if (note) {
+        note.textContent = "Network error. Please try again or email domingo@bhtnetworks.com.";
+      }
     }
   });
 }
