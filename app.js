@@ -163,14 +163,19 @@ function setupContactForm() {
 }
 
 function setupBackToTop() {
-  const backToTopLink = $(".footer__link[href='#top']");
-  if (!backToTopLink) return;
+  const backToTopLinks = document.querySelectorAll(".brand[href='#top'], .footer__link[href='#top']");
+  if (!backToTopLinks.length) return;
 
-  backToTopLink.addEventListener("click", (e) => {
+  const handleBackToTopClick = (e) => {
     e.preventDefault();
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    history.replaceState(null, "", "#top");
+  };
+
+  backToTopLinks.forEach((link) => {
+    link.addEventListener("click", handleBackToTopClick);
   });
 }
 
