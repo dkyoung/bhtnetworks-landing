@@ -402,12 +402,31 @@ h2 {
   letter-spacing: 0.9px;
 }
 
-.processGrid {
+.processFlow {
   margin-top: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
 }
 
 .processCard {
-  position: relative;
+  min-width: 0;
+}
+
+.processConnector {
+  align-self: center;
+  justify-self: center;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  color: rgba(233, 241, 255, 0.88);
+  font-size: 14px;
+  line-height: 1;
 }
 
 .stepLabel {
@@ -422,25 +441,6 @@ h2 {
   font-weight: 700;
   letter-spacing: 0.4px;
   text-transform: uppercase;
-}
-
-.processCard:not(:last-child)::after {
-  content: "\2192";
-  position: absolute;
-  top: 50%;
-  right: -16px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  display: grid;
-  place-items: center;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 14px;
-  z-index: 2;
-  pointer-events: none;
 }
 
 
@@ -876,8 +876,12 @@ h2 {
     display: block;
   }
 
-  .processCard:not(:last-child)::after {
-    content: none;
+  .processFlow {
+    grid-template-columns: 1fr;
+  }
+
+  .processConnector {
+    display: none;
   }
 }
 
