@@ -55,6 +55,12 @@ p { margin: 0 0 18px; max-width: 78ch; }
 ul { margin: 10px 0 24px; padding-left: 22px; }
 li { margin: 8px 0; }
 .status-note { padding: 18px 22px; border-left: 3px solid var(--mint); background: var(--surface); color: var(--muted); }
+.legal { max-width: 940px; }
+.legal .section { max-width: 78ch; }
+.contents { padding: 22px 0 34px; gap: 12px 22px; }
+.contents a { font-size: .9rem; }
+.review-note { padding: 18px 22px; border: 1px dashed #ae995b; border-radius: 12px; background: #242217; color: #e8ddb9; }
+.review-note p:last-child { margin-bottom: 0; }
 footer { padding: 30px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
 .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 28px; }
 footer p { margin: 0; }
